@@ -79,9 +79,15 @@ def test_fixed_poi_fit():
     fixed_poi_fit = abcd._fixed_poi_fit(signal_yields['A'])
     par_names = abcd.model.config.par_names
     assert fixed_poi_fit[par_names.index('mu')][0] == signal_yields['A']
-    assert math.isclose(fixed_poi_fit[par_names.index('systematic_uncertainty')][0], 0, abs_tol=1e-1)
     assert math.isclose(
-        fixed_poi_fit[par_names.index('mu_b')][0], observed_yields['A'], rel_tol=1e-2
+        fixed_poi_fit[par_names.index('systematic_uncertainty')][0],
+        0,
+        abs_tol=1e-1
+    )
+    assert math.isclose(
+        fixed_poi_fit[par_names.index('mu_b')][0],
+        observed_yields['A'],
+        rel_tol=1e-2
     )
     assert math.isclose(
         fixed_poi_fit[par_names.index('tau_B')][0],
@@ -101,7 +107,11 @@ def test_bkg_only_fit():
     par_names = abcd.model.config.par_names
     assert bkg_only_fit[par_names.index('mu')][0] == 0
     assert bkg_only_fit[par_names.index('systematic_uncertainty')][0] == 0
-    assert math.isclose(bkg_only_fit[par_names.index('mu_b')][0], observed_yields['A'], rel_tol=1e-2)
+    assert math.isclose(
+        bkg_only_fit[par_names.index('mu_b')][0],
+        observed_yields['A'],
+        rel_tol=1e-2
+    )
     assert math.isclose(
         bkg_only_fit[par_names.index('tau_B')][0],
         observed_yields['B'] / observed_yields['A'],
@@ -119,13 +129,25 @@ def test_fit():
     fit = abcd.fit()
     par_names = abcd.model.config.par_names
     assert math.isclose(fit[par_names.index('mu')][0], 0, abs_tol=1e-1)
-    assert math.isclose(fit[par_names.index('systematic_uncertainty')][0], 0, abs_tol=1e-1)
-    assert math.isclose(fit[par_names.index('mu_b')][0], observed_yields['A'], rel_tol=1e-2)
     assert math.isclose(
-        fit[par_names.index('tau_B')][0], observed_yields['B'] / observed_yields['A'], rel_tol=1e-2
+        fit[par_names.index('systematic_uncertainty')][0],
+        0,
+        abs_tol=1e-1
     )
     assert math.isclose(
-        fit[par_names.index('tau_C')][0], observed_yields['C'] / observed_yields['A'], rel_tol=1e-2
+        fit[par_names.index('mu_b')][0],
+        observed_yields['A'],
+        rel_tol=1e-2
+    )
+    assert math.isclose(
+        fit[par_names.index('tau_B')][0],
+        observed_yields['B'] / observed_yields['A'],
+        rel_tol=1e-2
+    )
+    assert math.isclose(
+        fit[par_names.index('tau_C')][0],
+        observed_yields['C'] / observed_yields['A'],
+        rel_tol=1e-2
     )
 
 
@@ -196,7 +218,9 @@ def test_bkg_only_fit_very_small_expected_mu_b():
     assert bkg_only_fit[par_names.index('mu')][0] == 0
     assert bkg_only_fit[par_names.index('systematic_uncertainty')][0] == 0
     assert math.isclose(
-        bkg_only_fit[par_names.index('mu_b')][0], observed_yields_copy['A'], abs_tol=1e-1
+        bkg_only_fit[par_names.index('mu_b')][0],
+        observed_yields_copy['A'],
+        abs_tol=1e-1
     )
     assert math.isclose(
         bkg_only_fit[par_names.index('tau_B')][0],
@@ -235,7 +259,9 @@ def test_bkg_only_fit_special_case():
     assert bkg_only_fit[par_names.index('mu')][0] == 0
     assert bkg_only_fit[par_names.index('systematic_uncertainty')][0] == 0
     assert math.isclose(
-        bkg_only_fit[par_names.index('mu_b')][0], observed_yields_special_case['A'], abs_tol=1e-1
+        bkg_only_fit[par_names.index('mu_b')][0],
+        observed_yields_special_case['A'],
+        abs_tol=1e-1
     )
     assert math.isclose(
         bkg_only_fit[par_names.index('tau_B')][0],
